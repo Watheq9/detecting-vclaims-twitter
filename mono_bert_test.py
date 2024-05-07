@@ -89,8 +89,8 @@ class MonoBertTester(MonoBertBase):
 
                 # Add the score of the query-title pair
                 if add_title_prediction:
-                    input_ids = batch[gb.QUERY_AND_TITLE_INPUT_IDS].to(device)
-                    attention_mask = batch[gb.QUERY_AND_TITLE_ATTENTION_MASK].to(device)
+                    input_ids = batch[cf.QUERY_AND_TITLE_INPUT_IDS].to(device)
+                    attention_mask = batch[cf.QUERY_AND_TITLE_ATTENTION_MASK].to(device)
                     if is_output_probability:
                         title_probs = model(input_ids=input_ids, attention_mask=attention_mask) # outputs are probabilities of each class
                     else:
@@ -124,8 +124,8 @@ class MonoBertTester(MonoBertBase):
                             
     def test_mono_bert(self, model_name, trained_model_weights, test_set_path, reranked_run_save_path, evaluation_save_path, 
                         apply_cleaning=False, max_len=180, batch_size=32, is_output_probability=True, 
-                        hyper_parameters={}, classifier_layers=gb.TWO_LAYERS, dropout=0.3,freeze_bert=False,
-                        add_title_prediction=False, what_to_test=gb.VCLAIM_ONLY,
+                        hyper_parameters={}, classifier_layers=cf.TWO_LAYERS, dropout=0.3,freeze_bert=False,
+                        add_title_prediction=False, what_to_test=cf.VCLAIM_ONLY,
                         trec_run_path="", qrels_path=""):
         '''
         Run the trained model on the test set, then re-ranked the examples based on the new computed score
@@ -142,7 +142,7 @@ class MonoBertTester(MonoBertBase):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         # load the fined-tuned model
-        if classifier_layers == gb.TWO_LAYERS:
+        if classifier_layers == cf.TWO_LAYERS:
             model = classifier.RelevanceClassifierTwoLayers(bert_name=model_name, n_classes=self.NUM_CLASSES, 
                             freeze_bert=freeze_bert, dropout=dropout,is_output_probability=is_output_probability)
         else:
@@ -159,14 +159,14 @@ class MonoBertTester(MonoBertBase):
         
 
         # create evaluation data loader
-        if what_to_test == gb.VCLAIM_AND_TITLE:
+        if what_to_test == cf.VCLAIM_AND_TITLE:
             add_title_prediction = True
             test_data_loader = dataset.create_data_loader_with_title(
                         df_test[self.TWEET_TEXT_COLUMN], df_test[self.TWEET_ID_COLUMN], df_test[self.VCLAIM], 
                         df_test[self.VCLAIM_ID], df_test[self.LABEL], tokenizer, max_len, batch_size, 
-                        titles= df_test[gb.TITLE])
+                        titles= df_test[cf.TITLE])
         else:
-            if what_to_test == gb.TITLE_ONLY:
+            if what_to_test == cf.TITLE_ONLY:
                 df_doc = df_test[self.TITLE]
             else:
                 df_doc = df_test[self.VCLAIM]
@@ -208,7 +208,7 @@ class MonoBertTester(MonoBertBase):
         # load the queries file
         df_query = Utils.read_file(query_path)
         df_query["query"] =df_query["cleaned"]
-        df_query["qid"] = df_query[gb.TWEET_ID].astype(str)
+        df_query["qid"] = df_query[cf.TWEET_ID].astype(str)
         df_query = df_query[["qid", "query"]]
 
         runs_list = []

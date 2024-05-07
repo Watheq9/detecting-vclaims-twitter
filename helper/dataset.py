@@ -56,14 +56,14 @@ class CLEFDataset(Dataset):
         )
 
         return {
-            gb.TWEET_TEXT: tweet,
-            gb.VCLAIM: vclaim,
-            gb.VCLAIM_ID: vclaim_id,
-            gb.TWEET_ID: tweet_id,
-            gb.LABEL: torch.tensor(label, dtype=torch.long),
-            gb.RANK: torch.tensor(rank, dtype=torch.long),
-            gb.LEXICAL_SIMILARITY: lexical_similarity, 
-            gb.SEMANTIC_SIMILARITY: semantic_similarity,
+            cf.TWEET_TEXT: tweet,
+            cf.VCLAIM: vclaim,
+            cf.VCLAIM_ID: vclaim_id,
+            cf.TWEET_ID: tweet_id,
+            cf.LABEL: torch.tensor(label, dtype=torch.long),
+            cf.RANK: torch.tensor(rank, dtype=torch.long),
+            cf.LEXICAL_SIMILARITY: lexical_similarity, 
+            cf.SEMANTIC_SIMILARITY: semantic_similarity,
             "input_ids": encoding["input_ids"].flatten(),
             "attention_mask": encoding["attention_mask"].flatten(),
         }
@@ -116,14 +116,14 @@ class CLEFDatasetWithTitle(Dataset):
             truncation=True, return_attention_mask=True, return_tensors="pt",)
 
         return {
-            gb.TWEET_TEXT: tweet,
-            gb.VCLAIM: vclaim,
-            gb.VCLAIM_ID: vclaim_id,
-            gb.TWEET_ID: tweet_id,
-            gb.LABEL: torch.tensor(label, dtype=torch.long),
-            gb.RANK: torch.tensor(rank, dtype=torch.long),
-            gb.QUERY_AND_TITLE_INPUT_IDS: query_title_encoding["input_ids"].flatten(),
-            gb.QUERY_AND_TITLE_ATTENTION_MASK: query_title_encoding["attention_mask"].flatten(), 
+            cf.TWEET_TEXT: tweet,
+            cf.VCLAIM: vclaim,
+            cf.VCLAIM_ID: vclaim_id,
+            cf.TWEET_ID: tweet_id,
+            cf.LABEL: torch.tensor(label, dtype=torch.long),
+            cf.RANK: torch.tensor(rank, dtype=torch.long),
+            cf.QUERY_AND_TITLE_INPUT_IDS: query_title_encoding["input_ids"].flatten(),
+            cf.QUERY_AND_TITLE_ATTENTION_MASK: query_title_encoding["attention_mask"].flatten(), 
             "input_ids": query_vclaim_encoding["input_ids"].flatten(),
             "attention_mask": query_vclaim_encoding["attention_mask"].flatten(),
         }

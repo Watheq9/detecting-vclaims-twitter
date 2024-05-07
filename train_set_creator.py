@@ -340,7 +340,7 @@ class MonoBertTrainSetCreator():
                 # Add the verified claim title only                
                 df_result = df_result.append(title_row, ignore_index=True)
             
-            else:# what_to_add == gb.VCLAIM_AND_TITLE: 
+            else:# what_to_add == cf.VCLAIM_AND_TITLE: 
                 # Add the verified claim text and its title
                 df_result = df_result.append(vclaim_row, ignore_index=True)
                 df_result = df_result.append(title_row, ignore_index=True)
