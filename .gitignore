@@ -1,0 +1,8 @@
+indexes/*
+data/saved_models/*
+data/runs/*
+data/bert_evaluation/*
+data/evaluation/*
+__pycache__/*
+.vscode/*
+helper/__pycache__/*
